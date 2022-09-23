@@ -1,8 +1,3 @@
-
-
-from pprint import pprint
-import random as rng
-
 '''
 Vansh Saboo
 SoftDev
@@ -33,6 +28,9 @@ from the list value associated with the key, then it returns that random person 
 
 '''
 
+
+from pprint import pprint
+import random as rng
 
 # krewes = {2:[],7:[],8:[]}
 # 
