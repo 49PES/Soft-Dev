@@ -1,8 +1,6 @@
-# Brian, Vansh, Weichen
+# Clyde 'Thluffy' Sinclair
 # SoftDev
-# K12 -- Take and Give
-# 2022-10-17
-# time spent: 30 mins
+# Oct 2022
 
 from flask import Flask             #facilitate flask webserving
 from flask import render_template   #facilitate jinja templating
@@ -46,7 +44,7 @@ def disp_loginpage():
     return render_template( 'login.html' )
 
 
-@app.route("/auth", methods=['GET', 'POST'])
+@app.route("/auth") # , methods=['GET', 'POST'])
 def authenticate():
     print("\n\n\n")
     print("***DIAG: this Flask obj ***")
@@ -59,15 +57,10 @@ def authenticate():
     #print(request.args['username'])
     print("***DIAG: request.headers ***")
     print(request.headers)
-    if request.method == 'POST':
-        username = request.form.get('username')
-        return render_template('response.html',
-            username=username)  
-    return render_template('login.html')
+    return "Waaaa hooo HAAAH"  #response to a form submission
 
 
     
-
 if __name__ == "__main__": #false if this file imported as module
     #enable debugging, auto-restarting of server when this file is modified
     app.debug = True 
