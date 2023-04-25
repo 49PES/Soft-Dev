@@ -1,7 +1,10 @@
+// retrieve node in DOM via ID
 var c = document.getElementById("slate");
 
+// instantiate a CanvasRenderingContext2D object
 var ctx = c.getContext("2d");
 
+// init global state var
 var mode = "rect";
 
 var toggleMode = (e) => {
@@ -12,12 +15,13 @@ var toggleMode = (e) => {
     else{
         mode = "rect";
     }
+    bToggler.innerHTML = mode
 }
 
 var drawRect = function(e) {
     var mouseX = e.offsetX;
     var mouseY = e.offsetY;
-    
+
     ctx.beginPath();
     ctx.fillStyle = "red";
     ctx.fillRect(mouseX, mouseY, 30, 70);
@@ -47,12 +51,14 @@ var draw = (e) => {
 }
 
 var wipeCanvas = function(){
-    clearRect(0, 0, 600, 600);
+    ctx.clearRect(0, 0, 600, 600);
 }
 
 c.addEventListener("click", draw);
 
 var bToggler = document.getElementById("buttonToggle");
+// if you want the button to start as rect and not rect|circ then uncomment the line below
+// bToggler.innerHTML = mode
 bToggler.addEventListener("click", toggleMode);
 var clearB = document.getElementById("buttonClear");
 clearB.addEventListener("click", wipeCanvas);
