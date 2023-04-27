@@ -1,0 +1,2 @@
+Event capturing is where you go from the overarching object in the DOM to the lowest
+Event bubbling is the opposite, where you bubble upwards from the lowest, upwards
