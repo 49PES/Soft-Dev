@@ -5,51 +5,68 @@ var dotButton = document.getElementById("circle");
 var dvdButton = document.getElementById("dvd");
 var stopButton = document.getElementById("stop");
 
-var ctx = c.getContext("2d");
-var requestId;
-ctx.fillStyle = "cyan";
+// instantiate a CanvasRenderingContext2D object
+var ctx = c.getContext("2d")
 
-var radius = 0;
-var growing = true;
+// only fill style in this animation is cyan so we can just define it here
+ctx.fillStyle = "cyan"
 
-var clear = function(e){
-    // e.preventDefault(); // Stops the default action from happening
+var requestID;
+
+var clear = (e) => {
     ctx.clearRect(0, 0, 500, 500);
 }
 
+// init global state var
+var radius = 0;
+var growing = true;
+
 var drawDot = () => {
-    clear();
+    // clear the screen so we can overlay a new frame
+    clear()
 
-    if (growing && radius+1 > maxRadius) {
-        growing = false;
-    } else if (!growing && radius-1 < 0) {
-        growing = true;
-    }
+    // draws the circle
+    ctx.beginPath()
+    ctx.strokeStyle = "black"
+    ctx.arc(250,250, radius, 0, 2*Math.PI)
+    ctx.fill()
+    ctx.stroke()
+    window.cancelAnimationFrame(requestID)
 
+    // need to update the requestID so the stop function can know which request to cancel
+    requestID = window.requestAnimationFrame(drawDot)
+
+    // radius increases if the circle is growing vice versa
     if (growing) {
-        radius++; 
+        radius++
     } else {
-        radius--;
+        radius--
     }
 
-    ctx.beginPath();
-    ctx.arc(maxRadius, maxRadius, radius, 0, Math.PI*2, true);
-    ctx.fill();
-    ctx.closePath();
-
-    window.cancelAnimationFrame(requestID);
-    requestID = window.requestAnimationFrame(drawDot);
+    // switching point from growing to shrinking and vice versa
+    if (radius == 250 || radius == 0) {
+        growing = !growing
+    }
 }
 
-var stopIt = () => {
-    console.log("stopIt invoked...");
-    console.log(requestID);
+
+
+// For the Animaniac?
+var stopIt = function() {
+    console.log("stopIt invoked...")
+    console.log(requestID)
+
+    // use the global var to know which request to cancel
     window.cancelAnimationFrame(requestID)
 }
-
+ 
 
 var dvdLogoSetup = function(){
-    window.cancelAnimationFrame(requestId);
+    clear()
+
+    // window.cancelAnimationFrame(requestID);
+    window.cancelAnimationFrame(requestID);
+    requestID = window.requestAnimationFrame(dvdLogoSetup);
 
     var rectWidth = 60;
     var rectHeight = 40;
@@ -57,31 +74,34 @@ var dvdLogoSetup = function(){
     var rectX = Math.floor(Math.random() * (500 - rectWidth));
     var rectY = Math.floor(Math.random() * (500 - rectHeight));
 
-    var xVel = 1;
-    var yVel = 1;
+    var xVel = 0.0001;
+    var yVel = 0.0001;
+    
 
     var logo = new Image();
-    logo.src = "logo_dvd.jpg";
+    logo.src = "logo_dvd.jpg"; 
 
     var dvdLogo = function(){
         ctx.clearRect(0, 0, c.width, c.height);
-        ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
-        // ctx.drawImage(logo, rectX, re)
+        
+        // ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
+        ctx.drawImage(logo, rectX, rectY, rectWidth, rectHeight);
 
-        if(rectX == 0 || rectX + width == 500){
+        if(rectX == 0 || rectX + rectWidth == 500){
             xVel *= -1;
         }
             
-        if(rectY == 0 || rectY + height == 500){
+        if(rectY == 0 || rectY + rectHeight == 500){
             yVel *= -1;
         }
-        
+
         rectX += xVel;
         rectY += yVel;
-
-        requestId = window.requestAnimationFrame(dvdLogo);
     }
+    
     dvdLogo();
+    requestID = window.requestAnimationFrame(dvdLogoSetup);
+    // Yeah
 }
 
 dotButton.addEventListener("click", drawDot);
