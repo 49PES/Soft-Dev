@@ -1,5 +1,4 @@
 // access canvas and buttons via DOM (update HTML source to align)
-
 var c = document.getElementById("playground");
 var dotButton = document.getElementById("circle");
 var dvdButton = document.getElementById("dvd");
@@ -64,46 +63,52 @@ var stopIt = function() {
 var dvdLogoSetup = function(){
     clear()
 
-    // window.cancelAnimationFrame(requestID);
     window.cancelAnimationFrame(requestID);
-    requestID = window.requestAnimationFrame(dvdLogoSetup);
 
-    var rectWidth = 60;
+    // The image is 600 x 400, so we want to preserve the dimensions
+    var rectWidth = 60; 
     var rectHeight = 40;
 
+    // coordinates are for the top left corner of the rectangle/image
     var rectX = Math.floor(Math.random() * (500 - rectWidth));
     var rectY = Math.floor(Math.random() * (500 - rectHeight));
 
-    var xVel = 0.0001;
-    var yVel = 0.0001;
+    var xVel = 1;
+    var yVel = 1;
     
-
+    // load up img
     var logo = new Image();
     logo.src = "logo_dvd.jpg"; 
 
     var dvdLogo = function(){
+        // clear canvas
         ctx.clearRect(0, 0, c.width, c.height);
         
+        // uncomment line below if you want rectangle instead of image
         // ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
         ctx.drawImage(logo, rectX, rectY, rectWidth, rectHeight);
 
+        // if it's on a side of the canvas, change direction (x or y depending on which side)
         if(rectX == 0 || rectX + rectWidth == 500){
-            xVel *= -1;
+            xVel *= -1; 
         }
-            
+        
         if(rectY == 0 || rectY + rectHeight == 500){
             yVel *= -1;
         }
 
+        // change coords of rect/img based on velocity
         rectX += xVel;
         rectY += yVel;
+
+        // want to rerun dvdLogo NOT dvdLogoSetup bc we just want to keep moving the rect/img
+        requestID = window.requestAnimationFrame(dvdLogo);
     }
-    
-    dvdLogo();
-    requestID = window.requestAnimationFrame(dvdLogoSetup);
-    // Yeah
+    dvdLogo(); 
+
 }
 
+// event listeners
 dotButton.addEventListener("click", drawDot);
 stopButton.addEventListener("click", stopIt);
-dvdButton.addEventListener("click", dvdLogoSetup);
+dvdButton.addEventListener("click", dvdLogoSetup); 
